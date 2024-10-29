@@ -360,6 +360,7 @@ class App(Converter, ttk.Frame):
             self.folder = self.save_path
 
         def load_tree(parent, path):
+            count = 0
             for filepath in os.listdir(path):
                 # 文件的绝对路径
                 abs_file_path = os.path.join(path, filepath)
@@ -378,6 +379,9 @@ class App(Converter, ttk.Frame):
                 if not os.path.isdir(abs_file_path):
                     # 插入树枝
                     self.tree.insert(parent, "end", text=get_last_path(filepath))
+                    count += 1
+                    if count == 50:
+                        break
 
         # 求文件的最后一个名字
         def get_last_path(path):
@@ -454,6 +458,6 @@ def main(dir_input, dir_output):
     window.title('AutoMusicConverter')
     window.resizable(False, False)
     # 设置图标
-    window.iconbitmap('AutoMusicConv-Icon.ico')
+    # window.iconbitmap('AutoMusicConv-Icon.ico')
     conv = App(dir_input, dir_output, master=window)
     conv.mainloop()

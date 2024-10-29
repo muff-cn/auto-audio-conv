@@ -6,9 +6,8 @@ from concurrent.futures import ThreadPoolExecutor
 from threading import Thread
 from time import time
 from tkinter import messagebox
-
 import eyed3
-
+from xm_decrypt import main
 from Netease_Mode import info_get
 
 """
@@ -108,6 +107,8 @@ class Converter:
                     self.uc_list.append(file)
                     print(f'{file_path} Successfully converted')
 
+            elif file_path.endswith('.xm'):
+                main(file_path, self.folder_path)
         with ThreadPoolExecutor(self.pool_num) as t:
             for root, dirs, files in os.walk(self.folder_path):
                 for _file in files:
@@ -128,7 +129,6 @@ class Converter:
 
         def norm_conv(file, file_path):
             if os.path.exists(f'{self.save_path}\\{file.split(".")[0]}.mp3'):
-
                 return None
             # elif file_path.endswith('.ogg'):
             #     pass
@@ -136,7 +136,7 @@ class Converter:
                 self.mp3_list.append(file)
 
             elif not file_path.endswith('.mgg') and not file_path.endswith('.ncm') and not file_path.endswith(
-                    '.kgm') and not file_path.endswith('.mp3') and not file_path.endswith('.uc'):
+                    '.kgm') and not file_path.endswith('.mp3') and not file_path.endswith('.uc') and not file_path.endswith('.xm'):
                 try:
                     cmd = [abs_path, '-i', file_path, '-vn', '-acodec', 'libmp3lame', '-ab', '320k',
                            f'{self.save_path}\\{os.path.splitext(file)[0]}.mp3']
